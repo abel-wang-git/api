@@ -1,9 +1,12 @@
 package com.wanghuiwen.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +16,11 @@ import java.util.Map;
 
 public class JSONUtils {
     private final static ObjectMapper objectMapper = new ObjectMapper();
+    static {
+        SimpleModule module = new SimpleModule("MultipartFileSerializer", new Version(1, 0, 0, null, null, null));
+        module.addSerializer(MultipartFile.class, new MultipartFileSerializer());
+        objectMapper.registerModule(module);
+    }
 
     private JSONUtils() {
 

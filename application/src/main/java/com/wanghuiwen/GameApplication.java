@@ -3,6 +3,7 @@ package com.wanghuiwen;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.LocaleResolver;
@@ -24,6 +25,7 @@ import static java.util.Collections.singletonList;
 @SpringBootApplication
 @MapperScan({"com.wanghuiwen.**.dao"})
 @EnableAspectJAutoProxy
+//@EnableCaching
 public class GameApplication {
 
     public static void main(String[] args) {

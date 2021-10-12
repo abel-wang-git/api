@@ -9,7 +9,5 @@ import java.util.List;
  * Created by wanghuiwen on 2021/07/13.
  */
 public interface MenuService extends Service<Menu> {
-    List<Menu> getByUid(Long id);
-
     List<Menu> getByRole(Long roleId);
 }

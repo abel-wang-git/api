@@ -21,4 +21,8 @@
   <delete id="deleteMenuById">
     delete  from role_menu where role_id = #{roleId}
     </delete>
+
+  <delete id="deleteButtonByRole">
+    delete  from role_button where role_id = #{roleId}
+    </delete>
 </mapper>

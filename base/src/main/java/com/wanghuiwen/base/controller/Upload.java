@@ -81,6 +81,7 @@ public class Upload {
             return resultGenerator.genResult(ResultEnum.UPLOADED_FAIL);
         }
     }
+
     /**
      * app安装包
      */

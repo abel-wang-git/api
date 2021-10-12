@@ -35,7 +35,7 @@ public class PowerSource implements FilterInvocationSecurityMetadataSource {
      */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        List<Api> powers = apiService.findAll();
+        List<Api> powers = apiService.listAll();
         FilterInvocation filterInvocation = (FilterInvocation) object;
 
         if (isMatcherAllowedRequest(filterInvocation)) return null ; //return null 表示允许访问，不做拦截
@@ -73,7 +73,7 @@ public class PowerSource implements FilterInvocationSecurityMetadataSource {
      * @return 定义允许请求的列表
      */
     private List<String> allowedRequest(){
-        List<SysWhitelist> whitelists=sysWhitelistService.findAll();
+        List<SysWhitelist> whitelists=sysWhitelistService.listAll();
 
         return whitelists.stream()
                 .map(SysWhitelist::getUrl)

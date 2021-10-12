@@ -1,39 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wanghuiwen.base.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.wanghuiwen.base.model.User">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="enable" jdbcType="BIT" property="enable" />
-    <result column="expired_time" jdbcType="BIGINT" property="expiredTime" />
-    <result column="credentials_expired_time" jdbcType="BIGINT" property="credentialsExpiredTime" />
-    <result column="locked" jdbcType="BIT" property="locked" />
-    <result column="merchant_id" jdbcType="BIGINT" property="merchantId" />
-    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
-    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.wanghuiwen.base.model.User">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="enable" jdbcType="BIT" property="enable"/>
+        <result column="expired_time" jdbcType="BIGINT" property="expiredTime"/>
+        <result column="credentials_expired_time" jdbcType="BIGINT" property="credentialsExpiredTime"/>
+        <result column="locked" jdbcType="BIT" property="locked"/>
+        <result column="merchant_id" jdbcType="BIGINT" property="merchantId"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
 
-  <select id="list" resultMap="BaseResultMap">
-    select * from user where 1=1
-    <if test="params.nickName!=null and params.nickName!=''">
-      and nick_name = #{params.nickName}
-    </if>
-    <if test="params.id!=null and params.id!=''">
-      and id = #{params.id}
-    </if>
-    <if test="params.loginName!=null and params.loginName!=''">
-      and login_name = #{params.loginName}
-    </if>
-    <if test="params.roleId!=null and params.roleId!=''">
-     and EXISTS(SELECT * from user_role WHERE user_role.user_id = user.id and user_role.role_id = #{params.roleId})
-    </if>
-  </select>
+    <select id="list" resultMap="BaseResultMap">
+        select * from user where 1=1
+        <if test="params.nickName!=null and params.nickName!=''">
+            and nick_name = #{params.nickName}
+        </if>
+        <if test="params.id!=null and params.id!=''">
+            and id = #{params.id}
+        </if>
+        <if test="params.loginName!=null and params.loginName!=''">
+            and login_name = #{params.loginName}
+        </if>
+        <if test="params.roleId!=null and params.roleId!=''">
+            and EXISTS(SELECT * from user_role WHERE user_role.user_id = user.id and user_role.role_id =
+            #{params.roleId})
+        </if>
+    </select>
 
-  <delete id="deleteRoleById">
-    DELETE FROM user_role WHERE user_id = #{userId}
-  </delete>
+    <delete id="deleteRoleById">
+        DELETE
+        FROM user_role
+        WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="deleteRoleByIdNoAdmin">
+        DELETE
+        FROM user_role
+        WHERE user_id = #{userId}
+          and not EXISTS(SELECT * from role WHERE dept_id = 1 and role.id = user_role.role_id)
+    </delete>
+
+    <select id="getByDepartment" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        user
+        WHERE
+        EXISTS (
+        SELECT
+        *
+        FROM
+        user_role
+        WHERE
+        user_role.user_id = user.id
+        AND EXISTS ( SELECT * FROM role WHERE role.id = user_role.role_id AND
+
+        role.dept_id in
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+        ))
+    </select>
 </mapper>

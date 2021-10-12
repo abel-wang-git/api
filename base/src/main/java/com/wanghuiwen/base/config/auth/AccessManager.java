@@ -1,12 +1,14 @@
 package com.wanghuiwen.base.config.auth;
 
 import com.wanghuiwen.base.config.ProjectConstant;
+import com.wanghuiwen.core.config.AuthUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,7 +19,7 @@ public class AccessManager  implements AccessDecisionManager {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 方法是判定是否拥有权限的决策方法，
-     * (1)authentication 是释CustomUserService中循环添加到 GrantedAuthority 对象中的权限信息集合.
+     * (1)authentication 是释UserService中循环添加到 GrantedAuthority 对象中的权限信息集合.
      * (2)object 包含客户端发起的请求的requset信息，可转换为 HttpServletRequest request = ((FilterInvocation) object).getHttpRequest();
      * (3)configAttributes 为MyFilterInvocationSecurityMetadataSource的getAttributes(Object object)这个方法返回的结果，此方法是为了判定用户请求的url 是否在权限表中，如果在权限表中，则返回给 decide 方法
      */
@@ -34,7 +36,14 @@ public class AccessManager  implements AccessDecisionManager {
         for(Iterator<ConfigAttribute> it = configAttributes.iterator(); it.hasNext();) {
             cfa = it.next();
             needRole = cfa.getAttribute();
-            //authentication 为CustomUserDetailService中添加的权限信息.
+
+            if(authentication instanceof UsernamePasswordAuthenticationToken){
+                AuthUser authUser = (AuthUser) authentication.getPrincipal();
+                if(authUser.getRoles().contains(ProjectConstant.ROLE_ADMIN)){
+                    return;
+                }
+            }
+
             for(GrantedAuthority grantedAuthority:authentication.getAuthorities()) {
                 if(needRole.equals(grantedAuthority.getAuthority())||grantedAuthority.getAuthority().equals(ProjectConstant.ROLE_ADMIN)) {
                     logger.info(authentication.getName()+":"+needRole);

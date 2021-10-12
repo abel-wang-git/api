@@ -12,8 +12,9 @@ public class Result {
     private String message;
     private Object data;
 
-    public void setCode(int code) {
+    public Result setCode(int code) {
         this.code = code;
+        return this;
     }
 
     public Result setMessage(String message) {
@@ -27,10 +28,6 @@ public class Result {
     }
 
     public Result() {
-    }
-    public Result setCode(ResultCode resultCode) {
-        this.code = resultCode.code();
-        return this;
     }
     public Result(Exception e) {
         this.code=400;

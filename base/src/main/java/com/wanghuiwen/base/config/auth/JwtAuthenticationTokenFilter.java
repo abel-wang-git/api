@@ -1,6 +1,6 @@
 package com.wanghuiwen.base.config.auth;
 
-import com.wanghuiwen.base.config.auth.service.DetailsServic;
+import com.wanghuiwen.base.config.auth.service.DetailsService;
 import com.wanghuiwen.common.JSONUtils;
 import com.wanghuiwen.core.response.Result;
 import com.wanghuiwen.core.response.ResultEnum;
@@ -25,6 +25,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+
     @Value("${jwt.header}")
     private String tokenHeader;
     @Value("${jwt.tokenHead}")
@@ -32,11 +33,11 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Resource
     private ResultGenerator resultGenerator;
 
-    private DetailsServic userDetailsService;
+    private DetailsService userDetailsService;
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public JwtAuthenticationTokenFilter(DetailsServic userDetailsService, JwtTokenUtil jwtTokenUtil) {
+    public JwtAuthenticationTokenFilter(DetailsService userDetailsService, JwtTokenUtil jwtTokenUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
 
@@ -49,16 +50,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(tokenHeader);
         if (authHeader != null && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());
+            String username = jwtTokenUtil.getUsernameFromToken(authToken);
 
-                    String username = jwtTokenUtil.getUsernameFromToken(authToken);
-                    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                        if (jwtTokenUtil.validateToken(authToken, username)) {
-                            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                            SecurityContextHolder.getContext().setAuthentication(authentication);
-                        }
-                    }
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtil.validateToken(authToken, username)) {
+                    //认证信息加入请求
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
 
         }
         filterChain.doFilter(request, response);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanghuiwen.user.dao.MediaResourceMapper">
+  <resultMap id="BaseResultMap" type="com.wanghuiwen.user.model.MediaResource">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="resource_id" jdbcType="BIGINT" property="resourceId" />
+    <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
+    <result column="resource_type" jdbcType="INTEGER" property="resourceType" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="video_cover" jdbcType="VARCHAR" property="videoCover" />
+    <result column="pid" jdbcType="BIGINT" property="pid" />
+  </resultMap>
+
+  <select id="userList" resultMap="BaseResultMap">
+    select * from  media_resource where user_id = #{params.userId}
+    <if test="params.pid != null">
+      and pid = #{params.pid}
+    </if>
+  </select>
+</mapper>

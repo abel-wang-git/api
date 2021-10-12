@@ -4,6 +4,7 @@ import com.wanghuiwen.base.dao.MenuMapper;
 import com.wanghuiwen.base.model.Menu;
 import com.wanghuiwen.base.service.MenuService;
 import com.wanghuiwen.core.service.AbstractService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +22,8 @@ public class MenuServiceImpl extends AbstractService<Menu> implements MenuServic
     private MenuMapper menuMapper;
 
     @Override
-    public List<Menu> getByUid(Long id) {
-        return menuMapper.getByUid(id);
-    }
-
-    @Override
+    @Cacheable(value = "Role::Menu",key = "#roleId")
     public List<Menu> getByRole(Long roleId) {
-
         return menuMapper.getByRole(roleId);
     }
 }

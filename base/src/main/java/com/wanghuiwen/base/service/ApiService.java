@@ -9,9 +9,10 @@ import java.util.List;
  * Created by wanghuiwen on 2021/07/13.
  */
 public interface ApiService extends Service<Api> {
-    List<Api> getByUser(Long id);
 
     Api selectByUrlAndMethod(String url, String method);
 
     List<Api> getByRole(Long roleId);
+
+    List<Api> listAll();
 }

@@ -7,6 +7,7 @@ import com.wanghuiwen.base.service.ApiService;
 import com.wanghuiwen.base.service.RoleService;
 import com.wanghuiwen.base.service.UserService;
 import com.wanghuiwen.core.config.AuthUser;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,22 +24,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DetailsServic implements UserDetailsService {
+public class DetailsService implements UserDetailsService {
 
     @Resource
     private UserService userService;
     @Resource
     private RoleService roleService;
-
-    @Resource
-    private ApiService apiService;
-
     @Resource
     private MessageSource messageSource;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userService.findBy("loginName",s);
+        User user = userService.findByLoginName(s);
         if(user==null){
             throw new UsernameNotFoundException(messageSource.getMessage("login.fail", null, LocaleContextHolder.getLocale()));
         }
@@ -49,7 +46,7 @@ public class DetailsServic implements UserDetailsService {
 
         //api 权限控制
         List<GrantedAuthority> authorities = new ArrayList<>();
-        List<Api> powers = apiService.getByUser(user.getId());
+        List<Api> powers = userService.getApis(user.getId());
         if (powers.size() > 0) {
             for (Api p : powers) {
                 authorities.add(new SimpleGrantedAuthority(p.getUrl()));
@@ -66,8 +63,7 @@ public class DetailsServic implements UserDetailsService {
                 user.getAvatar(),
                 user.getEnable(),
                 user.getLocked(),
-                new Date(user.getExpiredTime()),
-                new Date(user.getCredentialsExpiredTime()));
+                new Date(user.getExpiredTime()));
 
     }
 }

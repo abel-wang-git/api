@@ -26,6 +26,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 日志切面
@@ -57,7 +59,12 @@ public class LogAspect extends Ctrl {
         SysLog log = new SysLog();
 
         Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
-        AuthUser info = getAuthUser(authentication);
+        AuthUser info = null;
+        try {
+            info =  getAuthUser(authentication);
+        }catch (Exception e){
+            logger.error("auth user "+ authentication.getPrincipal());
+        }
         if(info!=null){
             log.setUserId(info.getId());
         }else {
@@ -89,8 +96,9 @@ public class LogAspect extends Ctrl {
             log.setMethod(signature.getMethod().getDeclaredAnnotation(PatchMapping.class).name());
         }
         logger.info("-->request请求类方法 : " + log.getMethod());
-        logger.info("-->request请求ARGS : " + JSONUtils.obj2json(joinPoint.getArgs()));
-        log.setRequestParams(JSONUtils.obj2json(joinPoint.getArgs()));
+        //todo 打印请求参数
+//        logger.info("-->request请求ARGS : " + JSONUtils.obj2json(joinPoint.getArgs()));
+//        log.setRequestParams(JSONUtils.obj2json(joinPoint.getArgs()));
 
         if(joinPoint.getTarget().getClass().isAnnotationPresent(Api.class)){
             log.setModular(joinPoint.getTarget().getClass().getAnnotation(Api.class).value());

@@ -13,4 +13,6 @@ public interface RoleMapper extends ApiMapper<Role> {
     void deleteApiById(long roleId);
 
     void deleteMenuById(long roleId);
+
+    void deleteButtonByRole(long roleId);
 }

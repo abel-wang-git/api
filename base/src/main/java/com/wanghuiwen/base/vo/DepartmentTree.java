@@ -5,9 +5,14 @@ import java.util.List;
 public class DepartmentTree {
     private Long id;
     private Long pid;
+    private Long adminId;
 
     private String name;
     private String ekey;
+    /**
+     * 1 部门
+     * 2 角色
+     */
     private Integer type;
 
     private List<DepartmentTree> children;
@@ -58,5 +63,13 @@ public class DepartmentTree {
 
     public void setEkey(String ekey) {
         this.ekey = ekey;
+    }
+
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 }

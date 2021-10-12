@@ -29,6 +29,11 @@ public abstract class AbstractService<T> implements Service<T> {
 
     @Override
     public void save(T model) {
+        apiMapper.insertSelective(model);
+    }
+
+    @Override
+    public void saveOrUpdate(T model) {
         if(isNew(model)){
             apiMapper.updateByPrimaryKeySelective(model);
         }else {

@@ -5,7 +5,6 @@ import java.util.List;
 
 public class RoleApiAdd {
     private long roleId;
-    @NotEmpty(message = "params.not.empty")
     private List<Long> api;
 
     public long getRoleId() {

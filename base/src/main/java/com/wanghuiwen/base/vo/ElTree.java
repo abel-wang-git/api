@@ -10,6 +10,8 @@ public class ElTree<T> {
 
     Integer type;
 
+    Boolean disabled;
+
     List<T> children;
 
     public Object getId() {
@@ -42,5 +44,13 @@ public class ElTree<T> {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Boolean getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(Boolean disabled) {
+        this.disabled = disabled;
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import java.io.FileDescriptor;
 import java.util.List;
 
 /**

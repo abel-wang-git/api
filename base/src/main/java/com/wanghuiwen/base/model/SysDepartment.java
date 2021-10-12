@@ -13,6 +13,12 @@ public class SysDepartment implements Serializable {
 
     private Long pid;
 
+    /**
+     * 管理员Id
+     */
+    @Column(name = "admin_id")
+    private Long adminId;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -55,5 +61,23 @@ public class SysDepartment implements Serializable {
      */
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    /**
+     * 获取管理员Id
+     *
+     * @return admin_id - 管理员Id
+     */
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    /**
+     * 设置管理员Id
+     *
+     * @param adminId 管理员Id
+     */
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 }

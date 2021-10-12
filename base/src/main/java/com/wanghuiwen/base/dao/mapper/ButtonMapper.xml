@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wanghuiwen.base.dao.ButtonMapper">
+  <resultMap id="BaseResultMap" type="com.wanghuiwen.base.model.Button">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="button_id" jdbcType="INTEGER" property="buttonId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mode_name" jdbcType="VARCHAR" property="modeName" />
+    <result column="button_code" jdbcType="VARCHAR" property="buttonCode" />
+  </resultMap>
+
+  <select id="getByRole" resultMap="BaseResultMap">
+    select * from button where EXISTS (SELECT * from role_button where role_button.button_id = button.button_id and role_button.role_id = #{id})
+  </select>
+</mapper>

@@ -1,0 +1,83 @@
+jpush:
+  appKey: f3dafe79b392ad1d61bfc003
+  liveTime: 300000
+  masterSecret: 5040ec6f25f7bb09df566858
+jwt:
+  expiration: 604800
+  header: Authorization
+  secret: mySecret
+  tokenHead: Bearer
+logging:
+  level:
+    com:
+      common:
+        mybatis: debug
+      wanghuiwen:
+        base:
+          dao: debug
+        ecommerce:
+          dao: debug
+mybatis:
+  hot:
+    reload:
+      delaySeconds: 5
+      enabled: true
+      mapperLocation: classpath*:com/api/**/*.xml
+      mappingPath: mapper
+      sleepSeconds: 5
+server:
+  port: 8003
+  servlet:
+    context-path: ''
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  cache:
+    type: redis
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-test-query: SELECT 1
+      max-lifetime: 30000
+      maximum-pool-size: 10
+      minimum-idle: 3
+    password: 12345678
+    url: jdbc:mysql://127.0.0.1:3306/mall?useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai&&allowPublicKeyRetrieval=true
+    username: root
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: GMT+8
+  jpa:
+    database: MYSQL
+    show-sql: true
+  messages:
+    basename: message,base/messages,ecommerce/messages,user/messages
+  mvc:
+    static-path-pattern: /static/**
+  redis:
+    database: 0
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    timeout: 5000
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    prefix: classpath:/templates/
+    suffix: .html
+upload:
+  file-path: /Users/huiwenwang/image/
+  host: https://wanghuiwen.com/boss/way/api/
+  prefix: image/
+  type: location
+  supportExtension:
+    - jpg
+    - jpeg
+    - png
+    - mp4

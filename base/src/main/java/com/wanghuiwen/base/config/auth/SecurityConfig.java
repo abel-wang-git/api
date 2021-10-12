@@ -1,6 +1,6 @@
 package com.wanghuiwen.base.config.auth;
 
-import com.wanghuiwen.base.config.auth.service.DetailsServic;
+import com.wanghuiwen.base.config.auth.service.DetailsService;
 import com.wanghuiwen.base.config.auth.handler.*;
 import com.wanghuiwen.base.model.SysWhitelist;
 import com.wanghuiwen.base.service.ApiService;
@@ -45,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
     @Resource
     private ResultGenerator resultGenerator;
+    @Resource
+    private   GoAuthenticationFailureHandler goAuthenticationFailureHandler;
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -61,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private DetailsServic detailsServic;
+    private DetailsService detailsServic;
 
 
     /**
@@ -110,7 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler(new GoAuthenticationSuccessHandler(userService))
-                .failureHandler(new GoAuthenticationFailureHandler(resultGenerator))
+                .failureHandler(goAuthenticationFailureHandler)
                 .and().logout().logoutUrl("/logout")
                 .logoutSuccessHandler(new GoLogoutSuccessHandler(resultGenerator))
                 .and().cors().and().csrf().disable();

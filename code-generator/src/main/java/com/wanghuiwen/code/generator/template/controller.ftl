@@ -1,7 +1,6 @@
 package ${basePackage}.controller;
 import ${baseController};
 import ${baseResult};
-import ${baseResultGenerator};
 import ${basePackage}.model.${modelNameUpperCamel};
 import ${basePackage}.service.${modelNameUpperCamel}Service;
 import com.github.pagehelper.PageHelper;
@@ -34,7 +33,7 @@ public class ${modelNameUpperCamel}Controller extends Ctrl{
     @PostMapping(value="/add",name="${businessName}添加")
     public Result add(@ApiParam ${modelNameUpperCamel} ${modelNameLowerCamel}) {
         ${modelNameLowerCamel}Service.save(${modelNameLowerCamel});
-        return ResultGenerator.genSuccessResult();
+        return resultGenerator.genSuccessResult();
     }
 
     @ApiOperation(value = "${businessName}删除", tags = {"${businessName}"}, notes = "${businessName}删除")
@@ -44,14 +43,14 @@ public class ${modelNameUpperCamel}Controller extends Ctrl{
     @PostMapping(value="/delete",name="${businessName}删除")
     public Result delete(@RequestParam Long id) {
         ${modelNameLowerCamel}Service.deleteById(id);
-        return ResultGenerator.genSuccessResult();
+        return resultGenerator.genSuccessResult();
     }
 
     @ApiOperation(value = "${businessName}修改", tags = {"${businessName}"}, notes = "${businessName}修改,对象主键必填")
     @PostMapping(value="/update",name="${businessName}修改")
     public Result update(@ApiParam ${modelNameUpperCamel} ${modelNameLowerCamel}) {
         ${modelNameLowerCamel}Service.update(${modelNameLowerCamel});
-        return ResultGenerator.genSuccessResult();
+        return resultGenerator.genSuccessResult();
     }
 
     @ApiOperation(value = "${businessName}详细信息", tags = {"${businessName}"}, notes = "${businessName}详细信息")
@@ -61,7 +60,7 @@ public class ${modelNameUpperCamel}Controller extends Ctrl{
     @PostMapping(value="/detail",name="${businessName}详细信息")
     public Result detail(@RequestParam Integer id) {
         ${modelNameUpperCamel} ${modelNameLowerCamel} = ${modelNameLowerCamel}Service.findById(id);
-        return ResultGenerator.genSuccessResult(${modelNameLowerCamel});
+        return resultGenerator.genSuccessResult(${modelNameLowerCamel});
     }
 
     @ApiOperation(value = "${businessName}列表信息", tags = {"${businessName}"}, notes = "${businessName}列表信息")
@@ -73,6 +72,6 @@ public class ${modelNameUpperCamel}Controller extends Ctrl{
     })
     @PostMapping(value = "/list", name = "${businessName}列表信息")
     public Result list() {
-        return ResultGenerator.genSuccessResult(${modelNameLowerCamel}Service.findAll());
+        return resultGenerator.genSuccessResult(${modelNameLowerCamel}Service.findAll());
     }
 }

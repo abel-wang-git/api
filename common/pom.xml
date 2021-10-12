@@ -40,6 +40,16 @@
     </dependency>
 
     <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
     </dependency>
@@ -59,6 +69,10 @@
       <groupId>org.mybatis.generator</groupId>
       <artifactId>mybatis-generator-core</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>javacv-platform</artifactId>
     </dependency>
   </dependencies>
 

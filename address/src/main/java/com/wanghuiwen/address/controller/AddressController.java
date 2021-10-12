@@ -79,25 +79,25 @@ public class AddressController  extends Ctrl {
 
     @PutMapping(value = "country/save",name = "保存国家")
     public Result saveCountry(@RequestBody AddressCountries countries) {
-        addressCountriesService.save(countries);
+        addressCountriesService.saveOrUpdate(countries);
         return resultGenerator.genSuccessResult();
     }
 
     @PutMapping(value = "city/save",name = "保存城市")
     public Result saveCity(@RequestBody AddressCities cities) {
-        addressCitiesService.save(cities);
+        addressCitiesService.saveOrUpdate(cities);
         return resultGenerator.genSuccessResult();
     }
 
     @PutMapping(value = "state/save",name = "保存省")
     public Result saveCity(@RequestBody AddressStates states) {
-        addressStatesService.save(states);
+        addressStatesService.saveOrUpdate(states);
         return resultGenerator.genSuccessResult();
     }
 
     @PutMapping(value = "district/save",name = "保存行政区")
     public Result saveCity(@RequestBody AddressDistrict district) {
-        addressDistrictService.save(district);
+        addressDistrictService.saveOrUpdate(district);
         return resultGenerator.genSuccessResult();
     }
 }
